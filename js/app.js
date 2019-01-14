@@ -68,7 +68,7 @@ var filter = {
       marker.addListener('click', function(e) {
         self.infoWindow.setContent(self.makeInfoWindowContent(marker.element));
         self.infoWindow.open(self.map, marker);
-      })
+      });
       bounds.extend(position);
     });
 
@@ -119,6 +119,10 @@ var filter = {
         map: self.map,
         icon: self.markerIcon,
         element: item
+      });
+      marker.addListener('click', function(e) {
+        self.infoWindow.setContent(self.makeInfoWindowContent(marker.element));
+        self.infoWindow.open(self.map, marker);
       });
       self.markers.push(marker);
     })
