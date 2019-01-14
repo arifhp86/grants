@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="filters">
+    <form>
+      <h2>Filter by</h2>
+
+      <h3>Program Area</h3>
+      <div class="filter filter-checkbox">
+        <label><input type="checkbox" name="program-area" id="program-area_0" value="Vulnerable_Victorians"> Vulnerable Victorians</label>
+        <label><input type="checkbox" name="program-area" id="program-area_1" value="Flora_and_Fauna"> Flora and Fauna</label>
+        <label><input type="checkbox" name="program-area" id="program-area_2" value="Education"> Education</label>
+        <label><input type="checkbox" name="program-area" id="program-area_3" value="Biodiversity"> Biodiversity</label>
+        <label><input type="checkbox" name="program-area" id="program-area_4" value="Education_Arts_and_Culture"> Education, Arts and Culture</label>
+      </div>
+
+      <h3>Financial Year</h3>
+      <!--
+      You can change how this looks, whatever works best, aslong as they can't set a past date, if they've already set a 'From:'' date.
+      e.g. if they've selected 'From: 01/19', then they can't select '12/18'. Only future months.
+      Please also restrict the the fields to be number only and 01-12 is the max for MM).
+      Can we make the input show '/' in the middle so the user types the number and it works intuitively like you see on other websites. e.g. https://codepen.io/chriscoyier/pen/jLevON
+      Doesn't need a calender.
+      -->
+
+
+      <div class="filter filter-date-range">
+        <input id="year-from" placeholder="From: MM/YY" value="" />
+        <input id="year-to" placeholder="To: MM/YY" value="" />
+      </div>
+
+      <h3>Amount</h3>
+      
+      <div class="filter filter-checkbox">
+        <label><input type="checkbox" name="amount" id="amount_0" value="Up_to_15k"> Up to $15,000</label>
+        <label><input type="checkbox" name="amount" id="amount_1" value="15k_50k"> $15,000-$50,000</label>
+        <label><input type="checkbox" name="amount" id="amount_2" value="50k_and_above"> $50,000 and above</label>
+      </div>
+      
+
+      <h3>Location</h3>
+      <div class="filter filter-checkbox">
+        <label><input type="checkbox" name="location" id="location_0" value="Victoria"> Victoria</label>
+        <label><input type="checkbox" name="location" id="location_1" value="New_South_Wales"> New South Wales</label>
+        <label><input type="checkbox" name="location" id="location_2" value="Others"> Others</label>
+      </div>
+
+      <h3>Status</h3>
+      <div class="filter filter-checkbox">
+        <label><input type="checkbox" name="status" id="status_0" value="On-going"> On-going</label>
+        <label><input type="checkbox" name="status" id="status_1" value="Completed"> Completed</label>
+      </div>
+
+      <h3>Search</h3>
+      <div class="filter filter-search">
+        <input type="text" placeholder="Search grant..." />
+      </div>
+
+    </form>
+  </div>
+
+  <!--
+  Below are the grants item. They will be listed with the latest grant year at the top (e.g. 2018 decending)
+  There are approx. 200 grants, and I want to show 21 on page load.
+
+  Clicking below LOAD ALL button at the bottom will display ALL grants on the page.
+  Please take into consideration that when user applies the Filters or searches a Keyword, it should be filtering ALL of the 200 grants and making the latest grants appear at the top.
+  (We can just show all 200 on page load as its only text and won't take a long time to page load in, then just hide 179 and only show 21, then show all if button is clicked. Easy.)
+
+  Every grant will have an Address associated with it. Which I want to make appear as a Pin on a Google Map (or any map, can you use any map api), make all Pins a specific colour brown #B06823.
+  All 200 grants will appear on the Map on page load, so you'll pretty much see half of Australia because we have grants in different states. As the user zooms in (e.g. zooms into our city of Melbourne - it'll just refresh and only show the grants in that search area. More info on this below.)
+
+  When a user clicks on the Pin, it will show a tooltip with the grants details as per mockup image below.
+  Choosing any of the filters or searching for keyword will only show those grants on the map.
+
+  The Search bar should search the Name of the Grant. E.g. if the name of the grant is called "Mental Health Legal Centre", the grant will be filtered if the user searches the keywords: 'mental' or 'health' or 'legal' or 'center' etc. basically just how a normal search would work.
+  I also want the grants to filter live as the user selects the checkboxes or searches a keyword, I want it to display them straight away live.
+
+  Can we have some basic CSS animation transitions for the list of grants like https://codyhouse.co/demo/content-filter/index.html#0 ? Doesn't need to be anything fancy. Aslong as its quick and smooth. A basic fadein/fadeout is okay.
+
+  Not sure how you are going to add the filters to the grants. I've made the form as easy as possible for you to work with, it can be customized any way you want to achieve the above.
+
+  Can I suggest adding the filters into the <li class="grant-item "> as a class or something? E.g. <li class="01_19 Flora_and_Fauna 15k_50k Victoria On-going">
+  You also need to somehow make the filtering of the Date behave properly, because each grant will have a month an year associated with it. e.g. September 2018
+
+  It kind of works similar to https://www.tripadvisor.com.au/Hotels-g255100-Melbourne_Victoria-Hotels.html#MAPVIEW - I know this is a much more complicated website so hopefully it is easy to build? Lol - you can see that as you zoom in and out of your map, the map refreshes and loads 'Search as I move the map'. I want this feature as well. It should ALWAYS search as I move the map.
+
+  Let me know if you have any questions. I am sure there will be additions after you have completed the above and I will of course pay you more for any additions.
+
+  -->
+
+  <ul class="grants-list">
+    <li class="grant-item Victoria Vulnerable_Victorians Up_to_15k date-09_18 On-going" data-lat="-37.812020" data-lng="144.970000">
+      <p><strong>Grant 1</strong></p>
+      <p>Address: <span class="grant-address">100 Bourke St, Melbourne VIC 3000</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: September 2018</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Flora_and_Fauna 15k_50k New_South_Wales Completed date-09_18" data-lat="-37.784950" data-lng="144.982224">
+      <p><strong>Grant 2</strong></p>
+      <p>Address: <span class="grant-address">179 St Georges Rd, Fitzroy North VIC 3068</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: September 2018</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Education 50k_and_above date-07_18 On-going Others" data-lat="-37.809430" data-lng="144.972160">
+      <p><strong>Grant 3</strong></p>
+      <p>Address: <span class="grant-address">20 Lonsdale St, East Melbourne VIC 3000</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: July 2018</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Biodiversity Up_to_15k date-07_17 Completed" data-lat="-37.806190" data-lng="144.903440">
+      <p><strong>Grant 4</strong></p>
+      <p>Address: <span class="grant-address">100 Whitehall St, Footscray VIC 3011</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: July 2017</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Education_Arts_and_Culture 15k_50k date-07_16 Completed New_South_Wales" data-lat="-37.753470" data-lng="144.924970">
+      <p><strong>Grant 5</strong></p>
+      <p>Address: <span class="grant-address">10 Raleigh St, Essendon VIC 3040</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: July 2016</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Vulnerable_Victorians Victoria 50k_and_above date-06_16 On-going" data-lat="-37.755200" data-lng="144.808190">
+      <p><strong>Grant 6</strong></p>
+      <p>Address: <span class="grant-address">10 St Albans Rd, St Albans VIC 3021</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: June 2016</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Flora_and_Fauna Others Up_to_15k Completed date-03_16" data-lat="-37.843550" data-lng="144.941480">
+      <p><strong>Grant 1</strong></p>
+      <p>Address: <span class="grant-address">95 Rouse St, Port Melbourne VIC 3207</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: March 2016</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Education New_South_Wales date-06_15 15k_50k On-going" data-lat="-37.862450" data-lng="144.972990">
+      <p><strong>Grant 2</strong></p>
+      <p>Address: <span class="grant-address">100 Fitzroy St, St Kilda VIC 3182</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: June 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Biodiversity New_South_Wales date-03_15 Completed 50k_and_above" data-lat="-37.961900" data-lng="145.156410">
+      <p><strong>Grant 3</strong></p>
+      <p>Address: <span class="grant-address">100 View Rd, Springvale VIC 3171</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: May 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Education_Arts_and_Culture Victoria date-03_15 15k_50k On-going" data-lat="-37.839450" data-lng="144.995620">
+      <p><strong>Grant 4</strong></p>
+      <p>Address: <span class="grant-address">100 Toorak Rd, South Yarra VIC 3141</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: May 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Vulnerable_Victorians Others date-02_15 50k_and_above Completed" data-lat="-33.855000" data-lng="150.927520">
+      <p><strong>Grant 5</strong></p>
+      <p>Address: <span class="grant-address">50 Bourke St, Smithfield NSW</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: February 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Flora_and_Fauna On-going Up_to_15k Others date-02_15" data-lat="-33.875370" data-lng="151.164120">
+      <p><strong>Grant 6</strong></p>
+      <p>Address: <span class="grant-address">100 Lonsdale St, Lilyfield NSW</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: February 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Education Completed 15k_50k date-02_15" data-lat="-27.680880" data-lng="153.118420">
+      <p><strong>Grant 1</strong></p>
+      <p>Address: <span class="grant-address">100 Bourke St, Waterford West QLD</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: February 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Biodiversity On-going 50k_and_above date-02_15" data-lat="-34.883080" data-lng="138.607710">
+      <p><strong>Grant 2</strong></p>
+      <p>Address: <span class="grant-address">100 Bourke St, Nailsworth SA</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: February 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Education_Arts_and_Culture Completed Up_to_15k Others" data-lat="-42.888600" data-lng="146.859700">
+      <p><strong>Grant 3</strong></p>
+      <p>Address: <span class="grant-address">200 West Plenty Road, Mount Lloyd TAS</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: January 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Education_Arts_and_Culture On-going 15k_50k" data-lat="-37.749860" data-lng="145.003560">
+      <p><strong>Grant 4</strong></p>
+      <p>Address: <span class="grant-address">100 Plenty Rd, Preston VIC 3072</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: January 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Flora_and_Fauna Completed 50k_and_above" data-lat="-37.749860" data-lng="145.003560">
+      <p><strong>Grant 5</strong></p>
+      <p>Address: <span class="grant-address">100 Plenty Rd, Preston VIC 3072</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: January 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+    <li class="grant-item Vulnerable_Victorians Victoria On-going Up_to_15k Others" data-lat="-37.749859" data-lng="145.003555">
+      <p><strong>Grant 6</strong></p>
+      <p>Address: <span class="grant-address">100 Outlook Dr, Glenroy VIC 3046</span></p>
+      <p>Invigor8ing Education. The ‘8’ in Invigor8 ingrepresents the Year 8 students who are the target demographic for this program</p>
+      <p>Date: January 2015</p>
+      <a href="#" target="_blank">View Details</a>
+    </li>
+  </ul>
+
+  <button class="load-all">LOAD ALL</button>
+  <div class="map">
+    <div id="map" style="height: 700px;"></div>
+    <!-- <img src="map.jpg" style="width:100%; height:auto;" /> -->
+  </div>
+  <!-- <script src="https://www.evolve-technik.com.au/_assets/js/jquery.min.js"></script> -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5rJZez-aaYeoGbMVh0vOgJwN2-1PmQwI"></script>
+  <script src="/js/jquery-2.2.4.min.js"></script>
+  <script src="/js/inputmask.min.js"></script>
+  <script src="/js/mixitup.min.js"></script>
+  <script src="/js/app.js"></script>
+  </body>
+</html>
