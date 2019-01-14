@@ -36,7 +36,7 @@ var filter = {
     this.yearTo = document.getElementById('year-to');
 
     this.markerIcon = {
-      url: '/images/marker.png',
+      url: 'images/marker.png',
       size: new google.maps.Size(32, 32),
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(0, 32)
