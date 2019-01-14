@@ -24,7 +24,7 @@ var filter = {
     this.$filters = $('.filters');
     this.filters = [];
     this.elements = Array.prototype.slice.call(document.querySelectorAll('.grant-item'));
-    this.hiddenElements = this.elements.slice(9);
+    this.hiddenElements = this.elements.slice(21);
     this.hiddenElements.forEach(function(item) {
       item.style.display = 'none';
     });
@@ -41,6 +41,8 @@ var filter = {
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(0, 32)
     };
+
+    this.infoWindow = new google.maps.InfoWindow();
 
     this.addEvents();
     this.initMap();
@@ -63,11 +65,24 @@ var filter = {
         element: item
       });
       self.markers.push(marker);
+      marker.addListener('click', function(e) {
+        self.infoWindow.setContent(self.makeInfoWindowContent(marker.element));
+        self.infoWindow.open(self.map, marker);
+      })
       bounds.extend(position);
     });
 
     this.map.fitBounds(bounds);
     this.addMapEvents();
+  },
+
+  makeInfoWindowContent: function(element) {
+    var $el = $(element);
+    var content = '';
+    content += '<h4>' + $el.find('.grant-title strong').text() + '</h4>';
+    content += '<p style="max-width: 250px">' + $el.find('.grant-description').text() + '</p>';
+    content += '<a href="'+$el.find('.grant-details-link').attr('href')+'">View Details</a>';
+    return content;
   },
 
   addMapEvents: function() {
@@ -131,7 +146,7 @@ var filter = {
       self.filters.push(group);
     });
 
-    if(self.yearFrom.value !== '' && self.yearTo.value !== '' && !isPastDate(self.yearFrom.value, self.yearTo.value)) {
+    if(self.yearFrom.value !== '' && self.yearTo.value !== '' && !self.isPastDate(self.yearFrom.value, self.yearTo.value)) {
       self.filters.push(self.monthYearClasses(self.yearFrom.value, self.yearTo.value));
     }
     var result = self.filter(self.elements, self.filters);
