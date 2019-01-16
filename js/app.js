@@ -11,6 +11,135 @@ var delay = (function(){
   };
 })();
 
+var mapStyles = [
+  {
+      "featureType": "administrative",
+      "elementType": "labels.text.fill",
+      "stylers": [
+          {
+              "color": "#444444"
+          }
+      ]
+  },
+  {
+      "featureType": "landscape",
+      "elementType": "all",
+      "stylers": [
+          {
+              "color": "#f2f2f2"
+          }
+      ]
+  },
+  {
+      "featureType": "poi",
+      "elementType": "all",
+      "stylers": [
+          {
+              "visibility": "off"
+          }
+      ]
+  },
+  {
+      "featureType": "road",
+      "elementType": "all",
+      "stylers": [
+          {
+              "saturation": -100
+          },
+          {
+              "lightness": 45
+          }
+      ]
+  },
+  {
+      "featureType": "road.highway",
+      "elementType": "all",
+      "stylers": [
+          {
+              "visibility": "simplified"
+          }
+      ]
+  },
+  {
+      "featureType": "road.highway",
+      "elementType": "geometry.fill",
+      "stylers": [
+          {
+              "color": "#edc200"
+          }
+      ]
+  },
+  {
+      "featureType": "road.highway",
+      "elementType": "labels.text.fill",
+      "stylers": [
+          {
+              "color": "#000000"
+          }
+      ]
+  },
+  {
+      "featureType": "road.highway",
+      "elementType": "labels.text.stroke",
+      "stylers": [
+          {
+              "color": "#ffffff"
+          },
+          {
+              "visibility": "simplified"
+          }
+      ]
+  },
+  {
+      "featureType": "road.arterial",
+      "elementType": "labels.icon",
+      "stylers": [
+          {
+              "visibility": "off"
+          }
+      ]
+  },
+  {
+      "featureType": "transit",
+      "elementType": "all",
+      "stylers": [
+          {
+              "visibility": "off"
+          }
+      ]
+  },
+  {
+      "featureType": "water",
+      "elementType": "all",
+      "stylers": [
+          {
+              "color": "#f5a301"
+          },
+          {
+              "visibility": "on"
+          }
+      ]
+  },
+  {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+          {
+              "color": "#000000"
+          }
+      ]
+  },
+  {
+      "featureType": "water",
+      "elementType": "labels.text.stroke",
+      "stylers": [
+          {
+              "visibility": "off"
+          }
+      ]
+  }
+];
+
 // Mixitup
 var filter = {
   init: function() {
@@ -41,6 +170,13 @@ var filter = {
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(0, 32)
     };
+    this.markerIconAlt = {
+      url: 'images/marker-alt.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(0, 32)
+    };
+    this.focusedMarker = null;
 
     this.infoWindow = new google.maps.InfoWindow();
 
@@ -52,7 +188,9 @@ var filter = {
     var self = this;
     this.map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: -25.354706, lng: 133.717515},
-      zoom: 4
+      zoom: 4,
+      gestureHandling: 'greedy',
+      styles: mapStyles
     });
     this.markers = [];
     var bounds = new google.maps.LatLngBounds();
@@ -68,12 +206,23 @@ var filter = {
       marker.addListener('click', function(e) {
         self.infoWindow.setContent(self.makeInfoWindowContent(marker.element));
         self.infoWindow.open(self.map, marker);
+        self.focusMarker(marker);
       });
       bounds.extend(position);
     });
 
     this.map.fitBounds(bounds);
     this.addMapEvents();
+  },
+
+  focusMarker: function(marker) {
+    if(this.focusedMarker) {
+      this.focusedMarker.setIcon(this.markerIcon);
+    }
+    if(typeof marker !== 'undefined') {
+      marker.setIcon(this.markerIconAlt);
+      this.focusedMarker = marker;
+    }
   },
 
   makeInfoWindowContent: function(element) {
@@ -104,6 +253,10 @@ var filter = {
         self.mixer.filter(newElements);
       }
     });
+
+    google.maps.event.addListener(this.infoWindow, 'closeclick', function() {
+      self.focusMarker(); // unfocus focused marker because we diden't pass anything as marker
+    });
   },
 
   resetMarkers: function(elements) {
@@ -123,6 +276,7 @@ var filter = {
       marker.addListener('click', function(e) {
         self.infoWindow.setContent(self.makeInfoWindowContent(marker.element));
         self.infoWindow.open(self.map, marker);
+        self.focusMarker(marker);
       });
       self.markers.push(marker);
     })
@@ -206,7 +360,7 @@ var filter = {
     var clases = [];
     var newDate = from;
     while(newDate <= to) {
-      clases.push('date-' + this.padZero(newDate.getMonth() + 1) + '_' + newDate.getFullYear().toString().substr(2, 2));
+      clases.push('date-' + this.padZero(newDate.getMonth() + 1) + '_' + newDate.getFullYear().toString());
       newDate.setMonth(newDate.getMonth() + 1);
     }
     return clases;
@@ -214,7 +368,7 @@ var filter = {
 
   toDate: function(mmyy) {
     mmyy = mmyy.split('/');
-    var year = mmyy[1] > 50 ? '19' + mmyy[1] : '20' + mmyy[1],
+    var year = mmyy[1],
     month = mmyy[0] - 1;
     return new Date(year, month);
   },
@@ -252,8 +406,8 @@ Inputmask.extendDefinitions({
         }]
     },
     Y: {
-        validator: "\\d{2}",
-        cardinality: 2,
+        validator: "\\d{4}",
+        cardinality: 4,
         placeholder: 'Y',
     }
 });
